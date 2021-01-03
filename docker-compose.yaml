@@ -4,13 +4,14 @@ services:
     image: 'mongo'
     volumes:
       - data:/data/db
-    environment: 
+    # container_name: mongodb
+    # environment: 
       # or - MONGO_INITDB_ROOT_USERNAME=goals
-      MONGO_INITDB_ROOT_USERNAME: goals
-      MONGO_INITDB_ROOT_PASSWORD: qwerty
+      # MONGO_INITDB_ROOT_USERNAME: max
+      # MONGO_INITDB_ROOT_PASSWORD: secret
     # adding environment variables file
-    # env_file: 
-    #   - ./env/mongo.env
+    env_file: 
+      - ./env/mongo.env
     # docker networks
     # networks: 
     #   - goals-network
@@ -27,8 +28,26 @@ services:
       - logs:/app/logs
       - ./backend:/app
       - /app/node_modules
-  # frontend:
+    env_file: 
+      - ./env/backend.env
+    depends_on: 
+      - mongodb
+  frontend:
+    build: './frontend'
+    ports: 
+      - '3000:3000'
+    volumes: 
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on: 
+      - backend
 
 volumes: 
   data:
   logs:
+
+    # force build images 
+    # docker-compose up --build
+    # just build images
+    # docker-compose build

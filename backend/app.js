@@ -84,9 +84,9 @@ app.delete('/goals/:id', async (req, res) => {
 });
 
 mongoose.connect(
-  `mongodb://${process.env.MONGODB_USER_NAME}:${process.env.MONGODB_USER_PASSWORD}@mongodb:27017/course-goals?authSource=admin`,
-
-  // 'mongodb://goals:qwerty@mongodb:27017/course-goals?authSource=admin',
+  `mongodb://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mongodb:27017/course-goals?authSource=admin`,
+ 
+  // 'mongodb://max:secret@mongodb:27017/course-goals?authSource=admin',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -95,6 +95,8 @@ mongoose.connect(
     if (err) {
       console.error('FAILED TO CONNECT TO MONGODB');
       console.error(err);
+      console.log('name', process.env.MONGODB_USERNAME)
+      console.log('password', process.env.MONGODB_PASSWORD)
     } else {
       console.log('CONNECTED TO MONGODB!');
       app.listen(80);
